@@ -19,7 +19,19 @@ router.post('/register', async (req, res, next) => {
 })
 
 router.post('/login', async (req, res, next) => {
-    res.json({ message: 'login working!' })
+    try {
+        const { username, password } = req.body
+        const [user] = await User.findBy({ username })
+        if(user && bcrypt.compareSync(password, user.password)){
+            //start session
+            req.session.user = user//important line!! it signals to the express-session library that a session needs to be saved for this user and a cookie needs to be set on the browser
+            res.json({ message: `welcome back, ${user.username}` })
+        } else {
+            next({ status: 401, message: 'bad credentials' })
+        }
+    } catch(err) {
+        next(err)
+    }
 })
 
 router.get('/logout', async (req, res, next) => {
