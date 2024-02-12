@@ -9,8 +9,8 @@ Guided project for **Node Auth 1** Module.
 
 ## Project Setup
 
-- [ ] clone this repository.
-- [ ] move into the project folder.
+- [ x ] clone this repository.
+- [ x ] move into the project folder.
 - [ ] type `npm i` to download dependencies.
 - [ ] type `npm run migrate` to run migrations.
 - [ ] type `npm run seed` to populate the db.
