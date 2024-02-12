@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const session = require('express-session')
+const Store = require('connect-session-knex')(session)
 const authRouter = require('./auth/auth-router.js')
 const usersRouter = require('./users/users-router.js')
 
@@ -18,7 +19,14 @@ server.use(session({
   },
   rolling: true,//setting it to true makes sure you get a fresh cookie with every login(Set-Cookie on the reponse header should pop up in Network tab)
   resave: false,
-  saveUninitialized: false //setting it to false means we can only set a cookie on successful login!!
+  saveUninitialized: false, //setting it to false means we can only set a cookie on successful login!!
+  store: new Store({
+    knex: require('../database/db-config.js'),//gives the store direct access to the database
+    tablename: 'sessions',//the default is sessions already
+    sidfieldname: 'sid', //the deault name is already sessions id (sid)
+    createtable: true, //means if there is NO sessions table in the database, the library will go ahead and create it. createtable should NOT be camel cased
+    clearInterval: 1000 * 60 * 60,//clearInterval is the only one of these that SHOULD BE CAMEL CASED. its suppose to make sure there is clean up done every now and then to remove old sesions from the database to keep it clean and performant. ALSO EXPRESSED IN MILLISECONDS
+  })
 }))
 
 server.use('/api/auth', authRouter)
