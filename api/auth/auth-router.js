@@ -9,6 +9,7 @@ router.post('/register', async (req, res, next) => {
     const { username, password } = req.body
     const hash = bcrypt.hashSync(password, 8)//8 means it will be done 2 to the 8th power(2 ^ 8)!!!
     const newUser = { username, password: hash }
+    //password = hash
     const result = await User.add(newUser)
     res.status(201).json({
         message: `nice to have you on, ${result.username}`
