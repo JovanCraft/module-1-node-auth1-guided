@@ -10,16 +10,16 @@ const server = express()
 server.use(express.static(path.join(__dirname, '../client')))
 server.use(express.json())
 server.use(session({
-  name: 'monkey', //unique session id that is different from the user(the same user id my have several different sessions)
-  secret: 'keep it secret!',//secret string due to it being encrypted
+  name: 'monkey', //unique session id that is different from the user(the same user id my have several different sessions) DEFAULT IS: sid
+  secret: 'keep it secret, keep it safe!',//secret string due to it being encrypted; used to encrypt and decrypt the cookie/varify that the cookie is valid for each session
   cookie: {
-    maxAge: 1000 * 60 * 60, //so it will be perishable(is done in milliseconds!!)
-    secure: false, //true would mean that cookie can ONLY work with https, not http
-    httpOnly: false //http can NOT be accessed by JavaScript so this, setting it to false means the JavaScript CAN READ THE COOKIE
+    maxAge: 1000 * 60 * 60, //so it will be perishable(is done in milliseconds!!) ONE DAY IN MILLISECONDS WOULD BE: 1 * 24 * 60 * 60 * 1000
+    secure: false, //true would mean that cookie can ONLY work with https, not http; this should be TRUE in production
+    httpOnly: false //http can NOT be accessed by JavaScript so this, setting it to false means the JavaScript CAN READ THE COOKIE; always neds to be set to true in production
   },
   rolling: true,//setting it to true makes sure you get a fresh cookie with every login(Set-Cookie on the reponse header should pop up in Network tab)
-  resave: false,
-  saveUninitialized: false, //setting it to false means we can only set a cookie on successful login!!
+  resave: false,//forces the session to be saved back to the session store, even if the session wasn't modified during the request
+  saveUninitialized: false, //setting it to false means we can only set a cookie on successful login, reducing server usage!! Should only be true when the user has opted in to let us save cookies
   store: new Store({
     knex: require('../database/db-config.js'),//gives the store direct access to the database
     tablename: 'sessions',//the default is sessions already
