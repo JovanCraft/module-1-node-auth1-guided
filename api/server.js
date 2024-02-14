@@ -19,7 +19,7 @@ server.use(session({
   },
   rolling: true,//setting it to true makes sure you get a fresh cookie with every login(Set-Cookie on the reponse header should pop up in Network tab)
   resave: false,//forces the session to be saved back to the session store, even if the session wasn't modified during the request
-  saveUninitialized: false, //setting it to false means we can only set a cookie on successful login, reducing server usage!! Should only be true when the user has opted in to let us save cookies
+  saveUninitialized: false, //setting it to false means we can only set a cookie on successful login, reducing server usage!! Should only be true when the user has opted in to let us save cookies: There are laws against setting cookies automatically
   store: new Store({
     knex: require('../database/db-config.js'),//gives the store direct access to the database
     tablename: 'sessions',//the default is sessions already
