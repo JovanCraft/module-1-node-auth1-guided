@@ -32,7 +32,7 @@ router.post('/login', async (req, res, next) => {
         }
     } catch(err) {
         next(err)
-    }
+    }cd
 })
 
 router.get('/logout', async (req, res, next) => { //eslint-disable-line
@@ -55,10 +55,6 @@ router.get('/logout', async (req, res, next) => { //eslint-disable-line
 
 
 module.exports = router
-
-
-
-
 
 
 
